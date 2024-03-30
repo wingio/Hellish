@@ -1,13 +1,16 @@
 package xyz.wingio.hellish.ui.screen.main
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
@@ -16,14 +19,19 @@ import xyz.wingio.hellish.util.MainNavTab
 
 class MainScreen: Screen {
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun Content() {
         TabNavigator(MainNavTab.DEMON_LIST.tab) {
             Scaffold(
-                bottomBar = { TabNavBar() }
-            ) {
-                CurrentTab()
+                bottomBar = { TabNavBar() },
+                contentWindowInsets = WindowInsets(0, 0, 0, 0)
+            ) { pv ->
+                Box(
+                    modifier = Modifier.padding(pv)
+                ) {
+                    CurrentTab()
+                }
             }
         }
     }
