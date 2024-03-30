@@ -1,0 +1,81 @@
+[versions]
+# AndroidX
+appcompat = "1.6.1"
+androidx-core-ktx = "1.12.0"
+lifecycle-runtime-ktx = "2.7.0"
+
+# Compose
+activity-compose = "1.8.2"
+compose = "1.7.0-alpha05"
+compose-compiler = "1.5.6"
+compose-material3 = "1.3.0-alpha03"
+
+# Plugins
+agp = "8.3.1"
+kotlin = "1.9.21"
+
+# Misc
+koin = "3.6.0-wasm-alpha2"
+ktor = "2.3.9"
+voyager = "1.0.0"
+
+# Testing
+androidx-junit = "1.1.5"
+androidx-espresso-core = "3.5.1"
+junit = "4.13.2"
+
+
+[libraries]
+# AndroidX
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+
+# Compose
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "compose" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material3" }
+
+# Koin
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+
+# Ktor
+ktor-client = { group = "io.ktor", name = "ktor-client", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Voyager
+voyager-koin = { group = "cafe.adriel.voyager", name = "voyager-koin", version.ref = "voyager" }
+voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager" }
+voyager-screenmodel = { group = "cafe.adriel.voyager", name = "voyager-screenmodel", version.ref = "voyager" }
+voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitions", version.ref = "voyager" }
+voyager-tab-navigator = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version.ref = "voyager" }
+
+# Testing
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+
+[bundles]
+androidx = ["androidx-core-ktx", "androidx-lifecycle-runtime-ktx", "androidx-appcompat"]
+compose = ["compose-activity", "compose-material3", "compose-ui", "compose-ui-graphics", "compose-ui-tooling", "compose-ui-tooling-preview"]
+koin = ["koin-android", "koin-core", "koin-compose"]
+ktor = ["ktor-client", "ktor-serialization-kotlinx-json", "ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-logging"]
+voyager = ["voyager-koin", "voyager-navigator", "voyager-screenmodel", "voyager-tab-navigator", "voyager-transitions"]
+testing = ["androidx-junit", "androidx-espresso-core", "compose-ui-test-manifest", "compose-ui-test-junit4", "junit"]
