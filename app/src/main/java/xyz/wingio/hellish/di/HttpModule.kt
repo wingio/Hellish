@@ -14,6 +14,7 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import xyz.wingio.hellish.BuildConfig
+import xyz.wingio.hellish.domain.manager.AuthManager
 import xyz.wingio.hellish.rest.ApiService
 import xyz.wingio.hellish.rest.PointercrateClient
 import xyz.wingio.hellish.util.AppLogger
@@ -30,7 +31,11 @@ val HttpModule = module {
         }
     }
 
-    fun provideHttpClient(context: Context, appLogger: AppLogger): HttpClient {
+    fun provideHttpClient(
+        context: Context,
+        appLogger: AppLogger,
+        authManager: AuthManager
+    ): HttpClient {
         return HttpClient(CIO) {
             if (BuildConfig.DEBUG) {
                 install(Logging) {
@@ -43,6 +48,7 @@ val HttpModule = module {
             }
 
             defaultRequest {
+                if (authManager.isLoggedIn) header(HttpHeaders.Authorization, "Bearer ${authManager.authToken}")
                 header(HttpHeaders.UserAgent, buildUserAgent(context))
             }
         }

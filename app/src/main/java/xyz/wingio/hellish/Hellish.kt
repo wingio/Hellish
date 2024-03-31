@@ -6,6 +6,8 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.koinApplication
 import xyz.wingio.hellish.di.HttpModule
 import xyz.wingio.hellish.di.LoggerModule
+import xyz.wingio.hellish.di.ManagerModule
+import xyz.wingio.hellish.di.ViewModelModule
 
 class Hellish: Application() {
 
@@ -17,7 +19,9 @@ class Hellish: Application() {
 
             modules(
                 LoggerModule,
-                HttpModule
+                HttpModule,
+                ManagerModule,
+                ViewModelModule
             )
         }
     }
