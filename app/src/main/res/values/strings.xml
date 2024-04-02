@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Hellish</string>
 
-    <string name="tab_demon_list">Demon List</string>
+    <string name="tab_demon_list">Demonlist</string>
     <string name="tab_profile">Profile</string>
+
+    <string name="action_login">Login</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_skip_login">Continue as guest</string>
+
+    <string name="label_username">Username</string>
+    <string name="label_password">Password</string>
+    <string name="label_or">or</string>
+
+    <string name="landing_greeting_title">Welcome to Hellish!</string>
+    <string name="landing_greeting_subtitle">Your portal to the Demonlist!</string>
 </resources>

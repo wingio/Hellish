@@ -16,19 +16,36 @@ class LoginViewModel(
 ): ScreenModel {
 
     var username by mutableStateOf("")
+        private set
+
     var password by mutableStateOf("")
+        private set
 
     var loginSuccess by mutableStateOf(false)
         private set
 
+    var loading by mutableStateOf(false)
+        private set
+
     fun login() {
+        loading = true
         screenModelScope.launch {
             pointercrateClient.login(username, password).ifSuccessful {
                 authManager.setToken(it.token)
                 authManager.setUser(it.data)
+                authManager.setPassedOnboarding(true)
                 loginSuccess = true
             }
+            loading = false
         }
+    }
+
+    fun updateUsername(newUsername: String) {
+        username = newUsername
+    }
+
+    fun updatePassword(newPassword: String) {
+        password = newPassword
     }
 
 }

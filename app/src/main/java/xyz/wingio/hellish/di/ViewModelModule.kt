@@ -5,5 +5,7 @@ import org.koin.dsl.module
 import xyz.wingio.hellish.ui.screen.auth.viewmodel.LoginViewModel
 
 val ViewModelModule = module {
+
     factoryOf(::LoginViewModel)
+
 }

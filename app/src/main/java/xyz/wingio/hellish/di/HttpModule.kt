@@ -48,7 +48,7 @@ val HttpModule = module {
             }
 
             defaultRequest {
-                if (authManager.isLoggedIn) header(HttpHeaders.Authorization, "Bearer ${authManager.authToken}")
+                if (authManager.isAuthed) header(HttpHeaders.Authorization, "Bearer ${authManager.authToken}")
                 header(HttpHeaders.UserAgent, buildUserAgent(context))
             }
         }

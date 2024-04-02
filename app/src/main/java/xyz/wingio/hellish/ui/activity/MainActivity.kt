@@ -7,7 +7,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import org.koin.android.ext.android.get
 import xyz.wingio.hellish.domain.manager.AuthManager
-import xyz.wingio.hellish.ui.screen.auth.LoginScreen
+import xyz.wingio.hellish.ui.screen.auth.LandingScreen
 import xyz.wingio.hellish.ui.screen.main.MainScreen
 import xyz.wingio.hellish.ui.theme.HellishTheme
 
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val startScreen = if (authManager.isLoggedIn) MainScreen() else LoginScreen()
+        val startScreen = if (authManager.onboarded) MainScreen() else LandingScreen()
 
         setContent {
             HellishTheme {
