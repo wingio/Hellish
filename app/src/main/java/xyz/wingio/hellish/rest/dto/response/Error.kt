@@ -1,4 +1,4 @@
-package xyz.wingio.hellish.rest.dto
+package xyz.wingio.hellish.rest.dto.response
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

@@ -6,7 +6,8 @@ import kotlinx.serialization.json.Json
 import xyz.wingio.hellish.domain.manager.base.BasePreferenceManager
 import xyz.wingio.hellish.domain.manager.base.booleanPreference
 import xyz.wingio.hellish.domain.manager.base.stringPreference
-import xyz.wingio.hellish.rest.dto.User
+import xyz.wingio.hellish.domain.model.user.ModelUser
+import xyz.wingio.hellish.rest.dto.entity.User
 
 /**
  * Manages authentication state throughout the app
@@ -43,8 +44,12 @@ class AuthManager(
     /**
      * The current user's profile information
      */
-    val currentUser: User?
-        get() = if (userPref.isNotBlank()) json.decodeFromString<User>(userPref) else null
+    val currentUser: ModelUser?
+        get() = if (userPref.isNotBlank())
+                    ModelUser.fromApiUser(
+                        json.decodeFromString<User>(userPref)
+                    )
+                else null
 
     /**
      * Update the persisted [authentication token][authToken]
@@ -60,8 +65,8 @@ class AuthManager(
      *
      * @see currentUser
      */
-    fun setUser(newUser: User?) {
-        userPref = if (newUser != null) json.encodeToString<User>(newUser) else ""
+    fun setUser(newUser: ModelUser?) {
+        userPref = if (newUser != null) json.encodeToString<User>(newUser.toApiUser()) else ""
     }
 
     /**

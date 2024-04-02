@@ -1,6 +1,6 @@
-package xyz.wingio.hellish.rest
+package xyz.wingio.hellish.rest.response
 
-import xyz.wingio.hellish.rest.dto.ApiError
+import xyz.wingio.hellish.rest.dto.response.ApiError
 
 /**
  * Wrapper for safely handling http response data

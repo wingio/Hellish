@@ -1,4 +1,4 @@
-package xyz.wingio.hellish.rest
+package xyz.wingio.hellish.rest.response
 
 data class PageInfo(
     val after: String? = null,

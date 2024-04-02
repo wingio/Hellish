@@ -1,4 +1,4 @@
-package xyz.wingio.hellish.rest.dto
+package xyz.wingio.hellish.rest.dto.entity
 
 import kotlinx.serialization.Serializable
 

@@ -4,6 +4,7 @@ import android.content.Context
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
@@ -15,8 +16,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import xyz.wingio.hellish.BuildConfig
 import xyz.wingio.hellish.domain.manager.AuthManager
-import xyz.wingio.hellish.rest.ApiService
-import xyz.wingio.hellish.rest.PointercrateClient
+import xyz.wingio.hellish.domain.repository.PointercrateRepository
+import xyz.wingio.hellish.rest.service.ApiService
+import xyz.wingio.hellish.rest.service.PointercrateService
 import xyz.wingio.hellish.util.AppLogger
 import xyz.wingio.hellish.util.buildUserAgent
 
@@ -30,7 +32,6 @@ val HttpModule = module {
             namingStrategy = JsonNamingStrategy.SnakeCase
         }
     }
-
     fun provideHttpClient(
         context: Context,
         appLogger: AppLogger,
@@ -39,6 +40,8 @@ val HttpModule = module {
         return HttpClient(CIO) {
             if (BuildConfig.DEBUG) {
                 install(Logging) {
+                    sanitizeHeader("[ CENSORED ]") { it == HttpHeaders.Authorization }
+                    level = LogLevel.ALL
                     logger = object : Logger {
                         override fun log(message: String) {
                             appLogger.debug(message)
@@ -56,7 +59,9 @@ val HttpModule = module {
 
     singleOf(::provideJson)
     singleOf(::provideHttpClient)
+
     singleOf(::ApiService)
-    singleOf(::PointercrateClient)
+    singleOf(::PointercrateService)
+    singleOf(::PointercrateRepository)
 
 }

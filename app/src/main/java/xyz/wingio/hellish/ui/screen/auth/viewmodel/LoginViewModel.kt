@@ -7,12 +7,12 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import xyz.wingio.hellish.domain.manager.AuthManager
-import xyz.wingio.hellish.rest.PointercrateClient
-import xyz.wingio.hellish.rest.ifSuccessful
+import xyz.wingio.hellish.domain.repository.PointercrateRepository
+import xyz.wingio.hellish.rest.response.ifSuccessful
 
 class LoginViewModel(
     private val authManager: AuthManager,
-    private val pointercrateClient: PointercrateClient
+    private val pointercrateRepository: PointercrateRepository
 ): ScreenModel {
 
     var username by mutableStateOf("")
@@ -30,9 +30,9 @@ class LoginViewModel(
     fun login() {
         loading = true
         screenModelScope.launch {
-            pointercrateClient.login(username, password).ifSuccessful {
-                authManager.setToken(it.token)
-                authManager.setUser(it.data)
+            pointercrateRepository.login(username, password).ifSuccessful { (token, user) ->
+                authManager.setToken(token)
+                authManager.setUser(user)
                 authManager.setPassedOnboarding(true)
                 loginSuccess = true
             }

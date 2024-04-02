@@ -1,4 +1,4 @@
-package xyz.wingio.hellish.rest
+package xyz.wingio.hellish.rest.service
 
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
@@ -11,7 +11,10 @@ import io.ktor.http.isSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import xyz.wingio.hellish.rest.dto.ApiError
+import xyz.wingio.hellish.rest.response.ApiResponse
+import xyz.wingio.hellish.rest.response.PagedResponse
+import xyz.wingio.hellish.rest.Route
+import xyz.wingio.hellish.rest.dto.response.ApiError
 import xyz.wingio.hellish.util.LinkPageExtractor
 
 class ApiService(
@@ -88,7 +91,11 @@ class ApiService(
 
                         else -> { // Otherwise, attempt to deserialize into a list of type T
                             val (nextPage, previousPage) = LinkPageExtractor.getPageInfo(response)
-                            PagedResponse.Success(json.decodeFromString<List<D>>(body), nextPage, previousPage)
+                            PagedResponse.Success(
+                                json.decodeFromString<List<D>>(body),
+                                nextPage,
+                                previousPage
+                            )
                         }
                     }
                 } else { // Server returned an error

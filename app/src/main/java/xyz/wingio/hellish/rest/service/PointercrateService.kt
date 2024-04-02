@@ -1,12 +1,13 @@
-package xyz.wingio.hellish.rest
+package xyz.wingio.hellish.rest.service
 
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
-import xyz.wingio.hellish.rest.dto.Login
+import xyz.wingio.hellish.rest.Routes
+import xyz.wingio.hellish.rest.dto.response.Login
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-class PointercrateClient(
+class PointercrateService(
     private val apiService: ApiService
 ) {
 

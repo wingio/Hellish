@@ -5,7 +5,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Url
 import xyz.wingio.hellish.BuildConfig
 import xyz.wingio.hellish.R
-import xyz.wingio.hellish.rest.PageInfo
+import xyz.wingio.hellish.rest.response.PageInfo
 
 fun buildUserAgent(context: Context): String {
     return buildString {
