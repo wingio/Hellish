@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hellish"
         android:name=".Hellish"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="34">
 
         <activity
             android:name=".ui.activity.MainActivity"

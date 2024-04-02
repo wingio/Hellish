@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.voyager)
+
+    implementation(libs.paging.compose)
 }
 
 fun getCurrentRemote(): String? =

@@ -15,4 +15,14 @@ object Routes {
 
     }
 
+    object V2: Route("/v2") {
+
+        object Demons: Route("$V2/demons") {
+
+            val Listed = Route("$Demons/listed")
+
+        }
+
+    }
+
 }

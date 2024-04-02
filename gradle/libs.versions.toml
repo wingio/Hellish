@@ -17,6 +17,7 @@ kotlin = "1.9.21"
 # Misc
 koin = "3.6.0-wasm-alpha2"
 ktor = "2.3.9"
+paging = "3.2.1"
 voyager = "1.0.0"
 
 # Testing
@@ -57,6 +58,9 @@ voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator",
 voyager-screenmodel = { group = "cafe.adriel.voyager", name = "voyager-screenmodel", version.ref = "voyager" }
 voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitions", version.ref = "voyager" }
 voyager-tab-navigator = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version.ref = "voyager" }
+
+# Misc.
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 
 # Testing
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }

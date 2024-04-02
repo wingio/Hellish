@@ -6,6 +6,6 @@ import kotlinx.serialization.json.JsonObject
 @Serializable
 data class ApiError(
     val code: Int,
-    val message: String,
+    override val message: String,
     val data: JsonObject
-)
+): Error()

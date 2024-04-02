@@ -12,3 +12,12 @@ fun <D, T> ApiResponse<D>.transform(block: (D) -> T): ApiResponse<T> {
         is ApiResponse.Failure -> ApiResponse.Failure(throwable, body)
     }
 }
+
+fun <D, T> PagedResponse<D>.transform(block: (List<D>) -> List<T>): PagedResponse<T> {
+    return when (this) {
+        is PagedResponse.Success -> PagedResponse.Success(block(data), nextPage, previousPage)
+        is PagedResponse.Empty -> PagedResponse.Empty()
+        is PagedResponse.Error -> PagedResponse.Error(error)
+        is PagedResponse.Failure -> PagedResponse.Failure(error, body)
+    }
+}

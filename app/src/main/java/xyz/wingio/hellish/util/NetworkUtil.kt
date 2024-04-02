@@ -24,11 +24,11 @@ fun buildUserAgent(context: Context): String {
  */
 object LinkPageExtractor {
 
-    private val LINK_REGEX = "<(.+?)>; rel=\"(next|prev)\"".toRegex()
+    private val LINK_REGEX = "<(.+?)>; rel=(next|prev)".toRegex()
 
     fun getPageInfo(response: HttpResponse): Pair<PageInfo?, PageInfo?> {
         val linkHeader = response.headers["links"] ?: return null to null
-        val links = linkHeader.split(", ")
+        val links = linkHeader.split(",")
         var next: PageInfo? = null
         var prev: PageInfo? = null
 

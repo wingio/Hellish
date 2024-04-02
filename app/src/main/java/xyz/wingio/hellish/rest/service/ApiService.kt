@@ -67,7 +67,7 @@ class ApiService(
         response
     }
 
-    suspend inline fun <D> paged(
+    suspend inline fun <reified D> paged(
         route: Route,
         method: HttpMethod = HttpMethod.Get,
         noinline request: (HttpRequestBuilder.() -> Unit)? = null
