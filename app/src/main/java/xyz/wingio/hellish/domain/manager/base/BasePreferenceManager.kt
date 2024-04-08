@@ -8,7 +8,8 @@ import androidx.core.content.edit
 import kotlin.reflect.KProperty
 
 abstract class BasePreferenceManager(
-    private val prefs: SharedPreferences
+    protected val prefs: SharedPreferences,
+    private val commit: Boolean = false
 ) {
 
     fun getString(key: String, defaultValue: String) =
@@ -24,10 +25,10 @@ abstract class BasePreferenceManager(
     inline fun <reified E : Enum<E>> getEnum(key: String, defaultValue: E) =
         enumValueOf<E>(getString(key, defaultValue.name))
 
-    fun putString(key: String, value: String) = prefs.edit { putString(key, value) }
-    fun putBoolean(key: String, value: Boolean) = prefs.edit { putBoolean(key, value) }
-    fun putInt(key: String, value: Int) = prefs.edit { putInt(key, value) }
-    fun putFloat(key: String, value: Float) = prefs.edit { putFloat(key, value) }
+    fun putString(key: String, value: String) = prefs.edit(commit) { putString(key, value) }
+    fun putBoolean(key: String, value: Boolean) = prefs.edit(commit) { putBoolean(key, value) }
+    fun putInt(key: String, value: Int) = prefs.edit(commit) { putInt(key, value) }
+    fun putFloat(key: String, value: Float) = prefs.edit(commit) { putFloat(key, value) }
 
     inline fun <reified E : Enum<E>> putEnum(key: String, value: E) =
         putString(key, value.name)

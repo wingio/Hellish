@@ -52,6 +52,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${file("./stability.config").absolutePath}"
+        )
     }
 
     buildFeatures {
@@ -72,12 +76,14 @@ android {
 
 dependencies {
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.coil)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.voyager)
 
     implementation(libs.paging.compose)
+    implementation(libs.material.kolor)
 }
 
 fun getCurrentRemote(): String? =

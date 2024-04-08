@@ -1,6 +1,16 @@
 package xyz.wingio.hellish.util
 
 import android.content.Context
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import coil3.intercept.Interceptor
+import coil3.request.ImageRequest
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.Url
 import xyz.wingio.hellish.BuildConfig
@@ -18,6 +28,12 @@ fun buildUserAgent(context: Context): String {
         append("; ${BuildConfig.GIT_REPO_URL}")
     }
 }
+
+val Interceptor.Chain.url: String
+    get() = request.data.toString()
+
+val ImageRequest.url: String
+    get() = data.toString()
 
 /**
  * Extracts paging info from the links response header
@@ -62,3 +78,34 @@ object LinkPageExtractor {
     }
 
 }
+
+@Composable
+@ExperimentalMaterial3Api
+fun rememberPullToRefreshState(
+    positionalThreshold: Dp = PullToRefreshDefaults.PositionalThreshold,
+    isRefreshing: Boolean = false,
+    enabled: () -> Boolean = { true },
+): PullToRefreshState {
+    val density = LocalDensity.current
+    val positionalThresholdPx = with(density) { positionalThreshold.toPx() }
+    return rememberSaveable(
+        positionalThresholdPx, enabled,
+        saver = PullToRefreshSaver(
+            positionalThreshold = positionalThresholdPx,
+            enabled = enabled,
+        )
+    ) {
+        PullToRefreshState(positionalThresholdPx, isRefreshing, enabled)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+private fun PullToRefreshSaver(
+    positionalThreshold: Float,
+    enabled: () -> Boolean,
+) = Saver<PullToRefreshState, Boolean>(
+    save = { it.isRefreshing },
+    restore = { isRefreshing ->
+        PullToRefreshState(positionalThreshold, isRefreshing, enabled)
+    }
+)

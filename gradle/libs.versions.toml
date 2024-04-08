@@ -3,6 +3,7 @@
 appcompat = "1.6.1"
 androidx-core-ktx = "1.12.0"
 lifecycle-runtime-ktx = "2.7.0"
+pallete = "1.0.0"
 
 # Compose
 activity-compose = "1.8.2"
@@ -15,8 +16,10 @@ agp = "8.3.1"
 kotlin = "1.9.21"
 
 # Misc
+coil = "3.0.0-alpha06"
 koin = "3.6.0-wasm-alpha2"
 ktor = "2.3.9"
+material-kolor = "1.4.4"
 paging = "3.2.1"
 voyager = "1.0.0"
 
@@ -31,6 +34,11 @@ junit = "4.13.2"
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+androidx-pallete = { group = "androidx.palette", name = "palette", version.ref = "pallete" }
+
+# Coil
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor", version.ref = "coil" }
 
 # Compose
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
@@ -60,6 +68,7 @@ voyager-transitions = { group = "cafe.adriel.voyager", name = "voyager-transitio
 voyager-tab-navigator = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version.ref = "voyager" }
 
 # Misc.
+material-kolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "material-kolor" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 
 # Testing
@@ -77,7 +86,8 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 
 [bundles]
-androidx = ["androidx-core-ktx", "androidx-lifecycle-runtime-ktx", "androidx-appcompat"]
+androidx = ["androidx-core-ktx", "androidx-lifecycle-runtime-ktx", "androidx-appcompat", "androidx-pallete"]
+coil = ["coil-compose", "coil-network-ktor"]
 compose = ["compose-activity", "compose-material3", "compose-ui", "compose-ui-graphics", "compose-ui-tooling", "compose-ui-tooling-preview"]
 koin = ["koin-android", "koin-core", "koin-compose"]
 ktor = ["ktor-client", "ktor-serialization-kotlinx-json", "ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-logging"]

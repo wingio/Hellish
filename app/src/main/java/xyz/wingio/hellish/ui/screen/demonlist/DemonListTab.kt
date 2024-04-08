@@ -1,16 +1,17 @@
 package xyz.wingio.hellish.ui.screen.demonlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,18 +21,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
@@ -40,8 +46,10 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import xyz.wingio.hellish.R
 import xyz.wingio.hellish.ui.icon.filled.Demon
+import xyz.wingio.hellish.ui.screen.demonlist.component.DemonListItem
 import xyz.wingio.hellish.ui.screen.demonlist.viewmodel.DemonListViewModel
 import xyz.wingio.hellish.util.TabOptions
+import xyz.wingio.hellish.util.rememberPullToRefreshState
 
 class DemonListTab: Tab {
 
@@ -57,19 +65,38 @@ class DemonListTab: Tab {
         val viewModel: DemonListViewModel = getScreenModel()
         val demons = viewModel.demons.collectAsLazyPagingItems()
         val statusBarHeight = WindowInsets.systemBars.asPaddingValues(LocalDensity.current).calculateTopPadding()
+        val pullToRefreshState = rememberPullToRefreshState(isRefreshing = true)
+
+        LaunchedEffect(Unit) {
+            pullToRefreshState.startRefresh()
+        }
+
+        LaunchedEffect(demons.loadState.refresh) {
+            if (demons.loadState.refresh == LoadState.NotLoading(false)) pullToRefreshState.endRefresh()
+        }
+
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
+                demons.refresh()
+            }
+        }
 
         Scaffold(
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { pv ->
             Box(
-                modifier = Modifier.padding(pv)
+                modifier = Modifier
+                    .padding(pv)
+                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
             ) {
                 LazyColumn(
                     contentPadding = PaddingValues(
-                        top = statusBarHeight + SearchBarDefaults.InputFieldHeight + 24.dp,
+                        top = statusBarHeight + SearchBarDefaults.InputFieldHeight + 8.dp + 32.dp, // Account for search and status bar, with an additional 32dp
                         start = 16.dp, end = 16.dp, bottom = 16.dp
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
                     items(
                         demons.itemCount,
@@ -77,18 +104,36 @@ class DemonListTab: Tab {
                         contentType = demons.itemContentType()
                     ) { i ->
                         demons[i]?.let {
-                            Text(text = "${it.position} ${it.name}")
+                            DemonListItem(demon = it)
                         }
                     }
                 }
 
                 Box(
                     modifier = Modifier
+                        .fillMaxSize()
+                        .clipToBounds()
+                ) {
+                    PullToRefreshContainer(
+                        state = pullToRefreshState,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(top = statusBarHeight + SearchBarDefaults.InputFieldHeight + 8.dp)
+                    )
+                }
+
+                // Adds a fade to the area behind the status bar to give the status icons some contrast
+                Box(
+                    modifier = Modifier
                         .fillMaxWidth()
-                        .height(statusBarHeight + 12.dp)
+                        .height(statusBarHeight + 8.dp)
                         .background(
                             Brush.verticalGradient(
-                                listOf(MaterialTheme.colorScheme.surface, MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), Color.Transparent),
+                                listOf(
+                                    MaterialTheme.colorScheme.surface,
+                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                                    Color.Transparent
+                                ),
                                 tileMode = TileMode.Decal
                             )
                         )
