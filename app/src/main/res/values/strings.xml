@@ -16,14 +16,23 @@
     <string name="label_password">Password</string>
     <string name="label_or">or</string>
 
+    <string name="placeholder_search">Search…</string>
+
     <string name="landing_greeting_title">Welcome to Hellish!</string>
     <string name="landing_greeting_subtitle">Your portal to the Demonlist!</string>
 
     <string name="settings_title">Settings</string>
 
     <string name="settings_theme">Theme</string>
-    <string name="settings_theme_preview">Theme Preview</string>
     <string name="settings_theme_description">Change the look and feel of the app</string>
+
+    <string name="settings_theme_preview">Theme Preview</string>
+    <string name="settings_theme_preview_buttons">Buttons</string>
+    <string name="settings_theme_preview_button">Button</string>
+    <string name="settings_theme_preview_tonal_button">Tonal Button</string>
+    <string name="settings_theme_preview_outlined_button">Outlined Button</string>
+    <string name="settings_theme_preview_text_button">Text Button</string>
+    <string name="settings_theme_preview_checkboxes">Checkboxes</string>
 
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>

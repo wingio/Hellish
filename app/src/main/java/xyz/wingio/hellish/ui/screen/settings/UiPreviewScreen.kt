@@ -61,51 +61,51 @@ class UiPreviewScreen: Screen {
                     .padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                SettingsHeader(text = "Buttons")
+                SettingsHeader(text = stringResource(R.string.settings_theme_preview_buttons))
 
                 ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                     PreviewItem {
                         Button(onClick = { }) {
-                            Text(text = "Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_button))
                         }
 
                         Button(onClick = { }, enabled = false) {
-                            Text(text = "Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_button))
                         }
                     }
 
                     PreviewItem {
                         FilledTonalButton(onClick = { /*TODO*/ }) {
-                            Text(text = "Tonal Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_tonal_button))
                         }
 
                         FilledTonalButton(onClick = { /*TODO*/ }, enabled = false) {
-                            Text(text = "Tonal Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_tonal_button))
                         }
                     }
 
                     PreviewItem {
                         OutlinedButton(onClick = { /*TODO*/ }) {
-                            Text(text = "Outlined Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_outlined_button))
                         }
 
                         OutlinedButton(onClick = { /*TODO*/ }, enabled = false) {
-                            Text(text = "Outlined Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_outlined_button))
                         }
                     }
 
                     PreviewItem {
                         TextButton(onClick = { /*TODO*/ }) {
-                            Text(text = "Text Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_text_button))
                         }
 
                         TextButton(onClick = { /*TODO*/ }, enabled = false) {
-                            Text(text = "Text Button")
+                            Text(text = stringResource(R.string.settings_theme_preview_text_button))
                         }
                     }
                 }
 
-                SettingsHeader(text = "Checkboxes")
+                SettingsHeader(text = stringResource(R.string.settings_theme_preview_checkboxes))
 
                 ElevatedCard(modifier = Modifier.fillMaxWidth()) {
                     PreviewItem {

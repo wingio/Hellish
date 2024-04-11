@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -171,7 +172,7 @@ class DemonListTab: Tab {
                 onSearch = {},
                 active = active,
                 onActiveChange = { active = it },
-                placeholder = { Text(text = "Search...") },
+                placeholder = { Text(text = stringResource(R.string.placeholder_search)) },
                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
                 trailingIcon = {
                     IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
