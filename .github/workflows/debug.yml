@@ -39,4 +39,4 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          path: app/android/build/outputs/apk/debug/android-debug.apk
+          path: app/build/outputs/apk/debug/android-debug.apk
