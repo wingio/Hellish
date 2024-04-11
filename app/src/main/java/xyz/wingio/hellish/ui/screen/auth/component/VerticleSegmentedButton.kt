@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,9 +22,9 @@ fun VerticalSegmentedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     enabledTextColor: Color = MaterialTheme.colorScheme.onPrimary,
-    disabledTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.3f),
+    disabledTextColor: Color = MaterialTheme.colorScheme.onSurface.copy(0.38f),
     enabledContainerColor: Color = MaterialTheme.colorScheme.primary,
-    disabledContainerColor: Color = MaterialTheme.colorScheme.primaryContainer.copy(0.3f)
+    disabledContainerColor: Color = MaterialTheme.colorScheme.onSurface.copy(0.12f)
 ) {
     val textColor = if (enabled) enabledTextColor else disabledTextColor
     val containerColor = if (enabled) enabledContainerColor else disabledContainerColor
@@ -37,7 +38,7 @@ fun VerticalSegmentedButton(
         modifier = modifier
             .clip(RoundedCornerShape(6.dp))
             .background(containerColor)
-            .clickable(enabled = enabled, onClick = onClick)
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
             .padding(16.dp)
     )
 }

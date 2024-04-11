@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
@@ -42,13 +44,17 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import xyz.wingio.hellish.R
 import xyz.wingio.hellish.ui.icon.filled.Demon
 import xyz.wingio.hellish.ui.screen.demonlist.component.DemonListItem
 import xyz.wingio.hellish.ui.screen.demonlist.viewmodel.DemonListViewModel
+import xyz.wingio.hellish.ui.screen.settings.SettingsScreen
 import xyz.wingio.hellish.util.TabOptions
+import xyz.wingio.hellish.util.navigate
 import xyz.wingio.hellish.util.rememberPullToRefreshState
 
 class DemonListTab: Tab {
@@ -147,6 +153,7 @@ class DemonListTab: Tab {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun Search() {
+        val navigator = LocalNavigator.currentOrThrow
         var query by remember {
             mutableStateOf("")
         }
@@ -166,6 +173,11 @@ class DemonListTab: Tab {
                 onActiveChange = { active = it },
                 placeholder = { Text(text = "Search...") },
                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
+                trailingIcon = {
+                    IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
+                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    }
+                },
                 shadowElevation = 4.5.dp
             ) {
             }

@@ -6,39 +6,50 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import org.koin.compose.koinInject
+import xyz.wingio.hellish.domain.manager.BaseTheme
+import xyz.wingio.hellish.domain.manager.PreferenceManager
+import xyz.wingio.hellish.domain.manager.Theme
 
 @Composable
 fun HellishTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current as ComponentActivity
+    val preferences: PreferenceManager = koinInject()
+
+    val isDark = when(preferences.baseTheme) {
+        BaseTheme.SYSTEM -> isSystemInDarkTheme()
+        BaseTheme.DARK -> true
+        BaseTheme.LIGHT -> false
+    }
+
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        preferences.theme == Theme.MONET && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (isDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> darkColorScheme()
-        else -> lightColorScheme()
+        preferences.theme == Theme.MONET -> Theme.DEMON.dark!! // Prevent crash if user manages to force dynamic theme on below A12
+
+        isDark-> preferences.theme.dark!!
+        !isDark -> preferences.theme.light!!
+        else -> Theme.DEMON.dark!!
     }
 
-    val systemBarStyle = remember {
+    val systemBarStyle = remember(isDark) {
         SystemBarStyle.auto(
-            lightScrim = lightColorScheme().scrim.toArgb(),
-            darkScrim = darkColorScheme().scrim.toArgb(),
-            detectDarkMode = { _ -> colorScheme.background.luminance() <= 0.5f }
+            lightScrim = colorScheme.scrim.toArgb(),
+            darkScrim = colorScheme.scrim.toArgb(),
+            detectDarkMode = { _ -> isDark }
         )
     }
+
     context.enableEdgeToEdge(systemBarStyle)
 
     MaterialTheme(

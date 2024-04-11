@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import cafe.adriel.voyager.transitions.SlideTransition
 import coil3.ImageLoader
 import coil3.SingletonImageLoader
@@ -36,7 +37,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             HellishTheme {
-                Navigator(startScreen) {
+                Navigator(
+                    startScreen,
+                    disposeBehavior = NavigatorDisposeBehavior(
+                        disposeNestedNavigators = false,
+                        disposeSteps = true
+                    )
+                ) {
                     SlideTransition(navigator = it)
                 }
             }

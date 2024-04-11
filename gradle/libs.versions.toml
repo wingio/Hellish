@@ -47,6 +47,7 @@ compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", ver
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material3" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.6.5" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
@@ -88,7 +89,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 [bundles]
 androidx = ["androidx-core-ktx", "androidx-lifecycle-runtime-ktx", "androidx-appcompat", "androidx-pallete"]
 coil = ["coil-compose", "coil-network-ktor"]
-compose = ["compose-activity", "compose-material3", "compose-ui", "compose-ui-graphics", "compose-ui-tooling", "compose-ui-tooling-preview"]
+compose = ["compose-activity", "compose-material3", "compose-ui", "compose-ui-graphics", "compose-ui-tooling", "compose-ui-tooling-preview", "compose-material-icons-extended"]
 koin = ["koin-android", "koin-core", "koin-compose"]
 ktor = ["ktor-client", "ktor-serialization-kotlinx-json", "ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-logging"]
 voyager = ["voyager-koin", "voyager-navigator", "voyager-screenmodel", "voyager-tab-navigator", "voyager-transitions"]
