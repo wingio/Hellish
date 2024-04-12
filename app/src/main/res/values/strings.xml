@@ -11,6 +11,9 @@
     <string name="action_open_settings">Open settings</string>
     <string name="action_open_preview">Open theme preview</string>
     <string name="action_back">Go back</string>
+    <string name="action_sign_out">Sign out</string>
+
+    <string name="action_dismiss_cancel">Cancel</string>
 
     <string name="label_username">Username</string>
     <string name="label_password">Password</string>
@@ -20,6 +23,9 @@
 
     <string name="landing_greeting_title">Welcome to Hellish!</string>
     <string name="landing_greeting_subtitle">Your portal to the Demonlist!</string>
+
+    <string name="sign_out_title">Sign Out?</string>
+    <string name="sign_out_body">Are you sure you want to sign out? You may need to sign in again later.</string>
 
     <string name="settings_title">Settings</string>
 

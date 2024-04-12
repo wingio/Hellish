@@ -14,8 +14,8 @@ android {
         applicationId = "xyz.wingio.hellish"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1000
-        versionName = "1.0.0"
+        versionCode = 1001
+        versionName = "1.0.01"
 
         buildConfigField("String", "BASE_URL", "\"https://pointercrate.com/api\"")
 

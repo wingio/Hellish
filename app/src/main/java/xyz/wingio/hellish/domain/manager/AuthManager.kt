@@ -78,4 +78,10 @@ class AuthManager(
         onboarded = hasOnboarded
     }
 
+    fun signOut() {
+        authToken = ""
+        onboarded = false
+        setUser(null)
+    }
+
 }
