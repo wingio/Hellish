@@ -81,7 +81,7 @@ class LandingScreen: Screen {
                     }
 
                     Text(
-                        text = "v${BuildConfig.VERSION_NAME}",
+                        text = "v${BuildConfig.VERSION_NAME}${if (BuildConfig.DEBUG) " - Debug" else ""}",
                         style = MaterialTheme.typography.labelMedium,
                         color = LocalContentColor.current.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center,

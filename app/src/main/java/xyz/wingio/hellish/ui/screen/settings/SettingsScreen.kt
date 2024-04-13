@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,6 +34,7 @@ import xyz.wingio.hellish.ui.screen.demonlist.DemonListTab
 import xyz.wingio.hellish.ui.screen.settings.component.SettingsCategory
 import xyz.wingio.hellish.ui.screen.settings.dialog.SignOutDialog
 import xyz.wingio.hellish.ui.screen.settings.viewmodel.SettingsViewModel
+import xyz.wingio.hellish.util.Constants
 
 class SettingsScreen: Screen {
 
@@ -68,6 +70,13 @@ class SettingsScreen: Screen {
                     text = stringResource(R.string.settings_theme),
                     subtext = stringResource(R.string.settings_theme_description),
                     destination = ::ThemeSettingsScreen
+                )
+
+                SettingsCategory(
+                    icon = Icons.Outlined.Info,
+                    text = stringResource(R.string.about_title),
+                    subtext = Constants.VERSION_STRING.replace("%%APPNAME%%", stringResource(R.string.app_name)),
+                    destination = ::AboutScreen
                 )
             }
         }

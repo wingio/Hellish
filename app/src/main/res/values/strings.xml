@@ -12,6 +12,9 @@
     <string name="action_open_preview">Open theme preview</string>
     <string name="action_back">Go back</string>
     <string name="action_sign_out">Sign out</string>
+    <string name="action_donate">Donate</string>
+    <string name="action_visit_creator_site">Visit the developer\'s website</string>
+    <string name="action_open_github">Visit the developer\'s GitHub profile</string>
 
     <string name="action_dismiss_cancel">Cancel</string>
 
@@ -50,4 +53,10 @@
     <string name="theme_tidal">Tidal</string>
     <string name="theme_twilight">Twilight</string>
     <string name="theme_catppuccin">Catppuccin</string>
+
+    <string name="about_title">About</string>
+    <string name="about_made_by">Made by</string>
+    <string name="about_source">Source</string>
+    <string name="about_bug_report">Report a bug</string>
+    <string name="about_translate">Translate</string>
 </resources>
