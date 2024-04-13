@@ -17,6 +17,22 @@
 
 </div>
 
+Contribute
+---
+If you're unfamiliar with programming but would still like to help you can by doing one of the following:
+- [Testing early builds and reporting issues](https://github.com/wingio/Hellish/issues/new)
+- [Translating the app into your language](https://crowdin.com/project/hellish)
+
+Otherwise if you do want to contribute code then it's preferred that you're familiar with the following technologies:
+- Kotlin
+- Android SDK
+- Koin DI
+- Jetpack Compose
+  - Voyager
+- The Pointercrate API
+  - Ktor (Client)
+  - Kotlinx Serialization
+
 Build
 ---
 
@@ -36,7 +52,8 @@ Build
     - [Enable usb debugging](https://developer.android.com/studio/debug/dev-options) and plug in your phone
     - Run `adb install app/build/outputs/apk/debug/app-debug.apk`
 
-# License
+License
+---
 Hellish is licensed under the GNU General Public License v3.0
 
 [![GitHub License](https://img.shields.io/github/license/wingio/Hellish?style=for-the-badge&labelColor=black&color=red)](LICENSE)
