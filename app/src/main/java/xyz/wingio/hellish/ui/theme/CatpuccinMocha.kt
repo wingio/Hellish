@@ -63,8 +63,8 @@ val CatppuccinMocha = ColorScheme(
     surfaceBright = Surface1,
     surfaceDim = Mantle,
     surfaceContainer = Mantle,
-    surfaceContainerHigh = Surface1,
-    surfaceContainerHighest = Surface0,
+    surfaceContainerHigh = Surface0,
+    surfaceContainerHighest = Surface1,
     surfaceContainerLow = Mantle,
     surfaceContainerLowest = Crust,
 )
