@@ -32,4 +32,13 @@ class PointercrateRepository(
         it.map { apiDemon -> ModelDemon.fromApiDemon(apiDemon) }
     }
 
+    suspend fun getDemons(
+        pageInfo: PageInfo? = null,
+        limit: Int = 30,
+        query: String? = null
+    ) = service.getDemons(pageInfo, limit, query).transform {
+        it.map { apiDemon -> ModelDemon.fromApiDemon(apiDemon) }
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package xyz.wingio.hellish.rest.service
 
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.http.HttpHeaders
 import xyz.wingio.hellish.rest.Routes
 import xyz.wingio.hellish.rest.dto.entity.Demon
@@ -35,6 +36,15 @@ class PointercrateService(
         pageInfo: PageInfo? = null
     ) = apiService.paged<Demon>(Routes.V2.Demons.Listed) {
         page(pageInfo)
+    }
+
+    suspend fun getDemons(
+        pageInfo: PageInfo? = null,
+        limit: Int = 30,
+        query: String? = null
+    ) = apiService.paged<Demon>(Routes.V2.Demons) {
+        page(pageInfo, limit)
+        query?.let { parameter("name_contains", query) }
     }
 
 }

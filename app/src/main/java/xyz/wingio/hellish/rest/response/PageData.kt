@@ -9,11 +9,11 @@ data class PageInfo(
     val limit: Int = 30
 )
 
-fun HttpRequestBuilder.page(pageInfo: PageInfo?) {
+fun HttpRequestBuilder.page(pageInfo: PageInfo?, limit: Int = pageInfo?.limit ?: 30) {
     if (pageInfo == null) parameter("limit", 30)
     pageInfo?.let { page ->
         page.after?.let { parameter("after", it) }
         page.before?.let { parameter("before", it) }
-        parameter("limit", page.limit)
+        parameter("limit", limit)
     }
 }
