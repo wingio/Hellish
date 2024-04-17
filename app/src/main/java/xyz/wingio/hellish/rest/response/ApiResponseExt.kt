@@ -21,3 +21,7 @@ fun <D, T> PagedResponse<D>.transform(block: (List<D>) -> List<T>): PagedRespons
         is PagedResponse.Failure -> PagedResponse.Failure(error, body)
     }
 }
+
+inline fun <D> PagedResponse<D>.ifSuccessful(block: (List<D>) -> Unit) {
+    if (this is PagedResponse.Success) block(data)
+}

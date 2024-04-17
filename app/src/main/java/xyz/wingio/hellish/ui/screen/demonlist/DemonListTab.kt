@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,10 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -49,14 +46,18 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import kotlinx.coroutines.delay
 import xyz.wingio.hellish.R
+import xyz.wingio.hellish.domain.manager.SearchDemon
 import xyz.wingio.hellish.ui.icon.filled.Demon
 import xyz.wingio.hellish.ui.screen.demonlist.component.DemonListItem
+import xyz.wingio.hellish.ui.screen.demonlist.component.DemonSearchList
 import xyz.wingio.hellish.ui.screen.demonlist.viewmodel.DemonListViewModel
 import xyz.wingio.hellish.ui.screen.settings.SettingsScreen
 import xyz.wingio.hellish.util.TabOptions
 import xyz.wingio.hellish.util.navigate
 import xyz.wingio.hellish.util.rememberPullToRefreshState
+import kotlin.time.Duration.Companion.seconds
 
 class DemonListTab: Tab {
 
@@ -74,7 +75,7 @@ class DemonListTab: Tab {
         val statusBarHeight = WindowInsets.systemBars.asPaddingValues(LocalDensity.current).calculateTopPadding()
         val pullToRefreshState = rememberPullToRefreshState(isRefreshing = true)
 
-        LaunchedEffect(Unit) {
+        LaunchedEffect(viewModel.demons) {
             pullToRefreshState.startRefresh()
         }
 
@@ -105,13 +106,25 @@ class DemonListTab: Tab {
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+                    if (viewModel.searchedQuery.isNotBlank()) {
+                        item("search header") {
+                            Text(
+                                text = stringResource(R.string.search_heading, viewModel.searchedQuery),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+
                     items(
                         demons.itemCount,
                         key = demons.itemKey(),
                         contentType = demons.itemContentType()
                     ) { i ->
                         demons[i]?.let {
-                            DemonListItem(demon = it)
+                            DemonListItem(
+                                demon = it,
+                                modifier = Modifier.animateItem()
+                            )
                         }
                     }
                 }
@@ -146,20 +159,25 @@ class DemonListTab: Tab {
                         )
                 )
 
-                Search()
+                Search(viewModel)
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun Search() {
+    private fun Search(
+        viewModel: DemonListViewModel
+    ) {
         val navigator = LocalNavigator.currentOrThrow
-        var query by remember {
-            mutableStateOf("")
-        }
-        var active by remember {
-            mutableStateOf(false)
+
+        LaunchedEffect(viewModel.searchQuery) {
+            if (viewModel.searchQuery.isNotBlank()) {
+                delay(0.3.seconds)
+                viewModel.getSearchSuggestions()
+            } else {
+                viewModel.clearSearch()
+            }
         }
 
         Box(
@@ -167,20 +185,33 @@ class DemonListTab: Tab {
             modifier = Modifier.fillMaxWidth()
         ) {
             SearchBar(
-                query = query,
-                onQueryChange = { query = it },
-                onSearch = {},
-                active = active,
-                onActiveChange = { active = it },
+                query = viewModel.searchQuery,
+                onQueryChange = { viewModel.searchQuery = it },
+                onSearch = { query -> viewModel.search(query, null as SearchDemon?) },
+                active = viewModel.searchActive,
+                onActiveChange = { viewModel.searchActive = it },
                 placeholder = { Text(text = stringResource(R.string.placeholder_search)) },
                 leadingIcon = { Icon(Icons.Outlined.Search, null) },
                 trailingIcon = {
-                    IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
-                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    if (!viewModel.searchActive) {
+                        IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
+                            Icon(imageVector = Icons.Outlined.Settings, contentDescription = stringResource(R.string.action_open_settings))
+                        }
+                    } else if (viewModel.searchQuery.isNotBlank()) {
+                        IconButton(onClick = { viewModel.clearSearch() }) {
+                            Icon(imageVector = Icons.Outlined.Clear, contentDescription = stringResource(R.string.action_clear))
+                        }
                     }
                 },
-                shadowElevation = 4.5.dp
+                shadowElevation = 3.dp
             ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    DemonSearchList(viewModel = viewModel)
+                }
             }
         }
     }
