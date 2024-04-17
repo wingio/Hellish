@@ -3,7 +3,9 @@ package xyz.wingio.hellish.domain.manager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.StringRes
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamicColorScheme
@@ -20,6 +22,13 @@ class PreferenceManager(
     var baseTheme by enumPreference("base_theme", BaseTheme.SYSTEM)
 
     var theme by enumPreference("theme", if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) Theme.MONET else Theme.DEMON)
+
+    val isDark: Boolean
+        @Composable get() = when (baseTheme) {
+            BaseTheme.DARK -> true
+            BaseTheme.LIGHT -> false
+            BaseTheme.SYSTEM -> isSystemInDarkTheme()
+        }
 
 }
 

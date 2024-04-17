@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">Hellish</string>
 
     <string name="tab_demon_list">Demonlist</string>
@@ -15,6 +15,8 @@
     <string name="action_donate">Donate</string>
     <string name="action_visit_creator_site">Visit the developer\'s website</string>
     <string name="action_open_github">Visit the developer\'s GitHub profile</string>
+    <string name="action_refine">Refine: %1$s</string>
+    <string name="action_clear">Clear</string>
 
     <string name="action_dismiss_cancel">Cancel</string>
 
