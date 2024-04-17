@@ -1,26 +1,23 @@
-package xyz.wingio.hellish.ui.screen.demonlist.viewmodel
+package xyz.wingio.hellish.rest.response
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import xyz.wingio.hellish.domain.model.ModelDemon
-import xyz.wingio.hellish.domain.repository.PointercrateRepository
-import xyz.wingio.hellish.rest.response.PageInfo
-import xyz.wingio.hellish.rest.response.PagedResponse
 
-class DemonListPagingSource(
-    private val pointercrateRepository: PointercrateRepository
-): PagingSource<PageInfo, ModelDemon>() {
+class ApiPagingSource<D : Any>(
+    private val request: suspend (PageInfo?, Int, String?) -> PagedResponse<D>,
+    private val query: String? = null
+): PagingSource<PageInfo, D>() {
 
-    override fun getRefreshKey(state: PagingState<PageInfo, ModelDemon>) =
+    override fun getRefreshKey(state: PagingState<PageInfo, D>) =
         state.anchorPosition?.let {
             state.closestPageToPosition(it)?.prevKey
         }
 
-    override suspend fun load(params: LoadParams<PageInfo>): LoadResult<PageInfo, ModelDemon> {
+    override suspend fun load(params: LoadParams<PageInfo>): LoadResult<PageInfo, D> {
         val page = params.key
 
         @Suppress("MoveVariableDeclarationIntoWhen", "RedundantSuppression")
-        val response = pointercrateRepository.getRankedDemons(page)
+        val response = request(page, page?.limit ?: 30, query)
 
         return when (response) {
             is PagedResponse.Success -> LoadResult.Page(response.data, nextKey = response.nextPage, prevKey = response.previousPage)

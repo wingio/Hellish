@@ -61,4 +61,6 @@
     <string name="about_source">Source</string>
     <string name="about_bug_report">Report a bug</string>
     <string name="about_translate">Translate</string>
+
+    <string name="search_heading">Showing results for \"%1$s\":</string>
 </resources>

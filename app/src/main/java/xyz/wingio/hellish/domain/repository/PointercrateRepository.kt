@@ -27,8 +27,10 @@ class PointercrateRepository(
     // ==================================
 
     suspend fun getRankedDemons(
-        pageInfo: PageInfo? = null
-    ) = service.getRankedDemons(pageInfo).transform {
+        pageInfo: PageInfo? = null,
+        limit: Int = 30,
+        query: String? = null
+    ) = service.getRankedDemons(pageInfo, limit, query).transform {
         it.map { apiDemon -> ModelDemon.fromApiDemon(apiDemon) }
     }
 

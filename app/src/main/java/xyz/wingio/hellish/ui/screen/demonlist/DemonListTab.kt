@@ -75,7 +75,7 @@ class DemonListTab: Tab {
         val statusBarHeight = WindowInsets.systemBars.asPaddingValues(LocalDensity.current).calculateTopPadding()
         val pullToRefreshState = rememberPullToRefreshState(isRefreshing = true)
 
-        LaunchedEffect(Unit) {
+        LaunchedEffect(viewModel.demons) {
             pullToRefreshState.startRefresh()
         }
 
@@ -106,13 +106,25 @@ class DemonListTab: Tab {
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+                    if (viewModel.searchedQuery.isNotBlank()) {
+                        item("search header") {
+                            Text(
+                                text = stringResource(R.string.search_heading, viewModel.searchedQuery),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
+
                     items(
                         demons.itemCount,
                         key = demons.itemKey(),
                         contentType = demons.itemContentType()
                     ) { i ->
                         demons[i]?.let {
-                            DemonListItem(demon = it)
+                            DemonListItem(
+                                demon = it,
+                                modifier = Modifier.animateItem()
+                            )
                         }
                     }
                 }

@@ -34,7 +34,8 @@ import xyz.wingio.hellish.util.thenIf
 
 @Composable
 fun DemonListItem(
-    demon: ModelDemon
+    demon: ModelDemon,
+    modifier: Modifier = Modifier
 ) {
     val paletteManager: PaletteManager = koinInject()
     val thumbnailColors = paletteManager.getThemeForImage(demon.thumbnail!!, paletteStyle = PaletteStyle.Vibrant)
@@ -43,7 +44,7 @@ fun DemonListItem(
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = if (demon.position == 1) 0.dp else 6.dp
         ),
-        modifier = Modifier
+        modifier = modifier
             .thenIf(demon.position == 1) {
                 shadow(
                     elevation = 16.dp,

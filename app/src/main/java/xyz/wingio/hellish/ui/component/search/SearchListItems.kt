@@ -12,7 +12,10 @@ fun <D> LazyListScope.searchListItems(
     onSearch: (SearchRecord<D>) -> Unit,
     onRefine: (SearchRecord<D>) -> Unit
 ) {
-    itemsIndexed(items) { i, record ->
+    itemsIndexed(
+        items,
+        key = { _, record -> record.query }
+    ) { i, record ->
         Column {
             SearchRecordItem(
                 searchRecord = record,

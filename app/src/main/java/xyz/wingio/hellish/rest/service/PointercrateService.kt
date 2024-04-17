@@ -33,9 +33,12 @@ class PointercrateService(
     // ==================================
 
     suspend fun getRankedDemons(
-        pageInfo: PageInfo? = null
+        pageInfo: PageInfo? = null,
+        limit: Int = 30,
+        query: String? = null
     ) = apiService.paged<Demon>(Routes.V2.Demons.Listed) {
-        page(pageInfo)
+        page(pageInfo, limit)
+        query?.let { parameter("name_contains", query) }
     }
 
     suspend fun getDemons(

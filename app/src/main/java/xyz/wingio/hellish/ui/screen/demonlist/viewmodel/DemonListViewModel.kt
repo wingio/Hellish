@@ -13,6 +13,7 @@ import xyz.wingio.hellish.domain.manager.RecentSearchManager
 import xyz.wingio.hellish.domain.manager.SearchDemon
 import xyz.wingio.hellish.domain.model.ModelDemon
 import xyz.wingio.hellish.domain.repository.PointercrateRepository
+import xyz.wingio.hellish.rest.response.ApiPagingSource
 import xyz.wingio.hellish.rest.response.ifSuccessful
 
 class DemonListViewModel(
@@ -20,17 +21,22 @@ class DemonListViewModel(
     val recentSearchManager: RecentSearchManager
 ): ScreenModel {
 
+    private val rankedPager = Pager(
+        PagingConfig(pageSize = 30)
+    ) {
+        ApiPagingSource(pointercrateRepository::getRankedDemons)
+    }.flow.cachedIn(screenModelScope)
+
+    var demons by mutableStateOf(rankedPager)
+        private set
+
     var suggestedDemon by mutableStateOf(null as ModelDemon?)
         private set
 
     var searchQuery by mutableStateOf("")
     var searchActive by mutableStateOf(false)
-
-    val demons = Pager(
-        PagingConfig(pageSize = 30)
-    ) {
-        DemonListPagingSource(pointercrateRepository)
-    }.flow.cachedIn(screenModelScope)
+    var searchedQuery by mutableStateOf("")
+        private set
 
     fun getSearchSuggestions() {
         screenModelScope.launch {
@@ -43,6 +49,8 @@ class DemonListViewModel(
     fun clearSearch() {
         searchQuery = ""
         suggestedDemon = null
+        searchedQuery = ""
+        demons = rankedPager
     }
 
     fun search(query: String, demon: ModelDemon? = null) = search(
@@ -56,6 +64,13 @@ class DemonListViewModel(
         searchQuery = query
         recentSearchManager.saveDemonSearch(query, demon)
         searchActive = false
+        searchedQuery = query
+
+        demons = Pager(
+            PagingConfig(pageSize = 30)
+        ) {
+            ApiPagingSource(pointercrateRepository::getDemons, query)
+        }.flow.cachedIn(screenModelScope)
     }
 
 }
