@@ -1,18 +1,18 @@
 [versions]
 # AndroidX
 appcompat = "1.6.1"
-androidx-core-ktx = "1.12.0"
+androidx-core-ktx = "1.13.1"
 lifecycle-runtime-ktx = "2.7.0"
 pallete = "1.0.0"
 
 # Compose
-activity-compose = "1.8.2"
-compose = "1.7.0-alpha06"
+activity-compose = "1.9.0"
+compose = "1.7.0-alpha08"
 compose-compiler = "1.5.6"
-compose-material3 = "1.3.0-alpha04"
+compose-material3 = "1.3.0-alpha06"
 
 # Plugins
-agp = "8.3.1"
+agp = "8.3.2"
 kotlin = "1.9.21"
 
 # Misc
@@ -47,7 +47,7 @@ compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", ver
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material3" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.6.5" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.6.7" }
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }

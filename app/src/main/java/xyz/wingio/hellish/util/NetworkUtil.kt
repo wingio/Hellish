@@ -78,34 +78,3 @@ object LinkPageExtractor {
     }
 
 }
-
-@Composable
-@ExperimentalMaterial3Api
-fun rememberPullToRefreshState(
-    positionalThreshold: Dp = PullToRefreshDefaults.PositionalThreshold,
-    isRefreshing: Boolean = false,
-    enabled: () -> Boolean = { true },
-): PullToRefreshState {
-    val density = LocalDensity.current
-    val positionalThresholdPx = with(density) { positionalThreshold.toPx() }
-    return rememberSaveable(
-        positionalThresholdPx, enabled,
-        saver = PullToRefreshSaver(
-            positionalThreshold = positionalThresholdPx,
-            enabled = enabled,
-        )
-    ) {
-        PullToRefreshState(positionalThresholdPx, isRefreshing, enabled)
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-private fun PullToRefreshSaver(
-    positionalThreshold: Float,
-    enabled: () -> Boolean,
-) = Saver<PullToRefreshState, Boolean>(
-    save = { it.isRefreshing },
-    restore = { isRefreshing ->
-        PullToRefreshState(positionalThreshold, isRefreshing, enabled)
-    }
-)

@@ -24,16 +24,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -56,7 +56,6 @@ import xyz.wingio.hellish.ui.screen.demonlist.viewmodel.DemonListViewModel
 import xyz.wingio.hellish.ui.screen.settings.SettingsScreen
 import xyz.wingio.hellish.util.TabOptions
 import xyz.wingio.hellish.util.navigate
-import xyz.wingio.hellish.util.rememberPullToRefreshState
 import kotlin.time.Duration.Companion.seconds
 
 class DemonListTab: Tab {
@@ -73,29 +72,27 @@ class DemonListTab: Tab {
         val viewModel: DemonListViewModel = getScreenModel()
         val demons = viewModel.demons.collectAsLazyPagingItems()
         val statusBarHeight = WindowInsets.systemBars.asPaddingValues(LocalDensity.current).calculateTopPadding()
-        val pullToRefreshState = rememberPullToRefreshState(isRefreshing = true)
-
-        LaunchedEffect(viewModel.demons) {
-            pullToRefreshState.startRefresh()
-        }
-
-        LaunchedEffect(demons.loadState.refresh) {
-            if (demons.loadState.refresh == LoadState.NotLoading(false)) pullToRefreshState.endRefresh()
-        }
-
-        if (pullToRefreshState.isRefreshing) {
-            LaunchedEffect(true) {
-                demons.refresh()
-            }
-        }
+        val pullToRefreshState = rememberPullToRefreshState()
 
         Scaffold(
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
         ) { pv ->
-            Box(
-                modifier = Modifier
-                    .padding(pv)
-                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
+            PullToRefreshBox(
+                isRefreshing = demons.loadState.refresh == LoadState.Loading,
+                onRefresh = { demons.refresh() },
+                state = pullToRefreshState,
+                indicator = {
+                    PullToRefreshDefaults.Indicator(
+                        state = pullToRefreshState,
+                        isRefreshing = demons.loadState.refresh == LoadState.Loading,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(
+                                top = statusBarHeight + SearchBarDefaults.InputFieldHeight + 8.dp, // Account for search and status bar
+                            )
+                    )
+                },
+                modifier = Modifier.padding(pv)
             ) {
                 LazyColumn(
                     contentPadding = PaddingValues(
@@ -127,19 +124,6 @@ class DemonListTab: Tab {
                             )
                         }
                     }
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clipToBounds()
-                ) {
-                    PullToRefreshContainer(
-                        state = pullToRefreshState,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(top = statusBarHeight + SearchBarDefaults.InputFieldHeight + 8.dp)
-                    )
                 }
 
                 // Adds a fade to the area behind the status bar to give the status icons some contrast
@@ -185,34 +169,45 @@ class DemonListTab: Tab {
             modifier = Modifier.fillMaxWidth()
         ) {
             SearchBar(
-                query = viewModel.searchQuery,
-                onQueryChange = { viewModel.searchQuery = it },
-                onSearch = { query -> viewModel.search(query, null as SearchDemon?) },
-                active = viewModel.searchActive,
-                onActiveChange = { viewModel.searchActive = it },
-                placeholder = { Text(text = stringResource(R.string.placeholder_search)) },
-                leadingIcon = { Icon(Icons.Outlined.Search, null) },
-                trailingIcon = {
-                    if (!viewModel.searchActive) {
-                        IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
-                            Icon(imageVector = Icons.Outlined.Settings, contentDescription = stringResource(R.string.action_open_settings))
-                        }
-                    } else if (viewModel.searchQuery.isNotBlank()) {
-                        IconButton(onClick = { viewModel.clearSearch() }) {
-                            Icon(imageVector = Icons.Outlined.Clear, contentDescription = stringResource(R.string.action_clear))
-                        }
+                inputField = {
+                    SearchBarDefaults.InputField(
+                        query = viewModel.searchQuery,
+                        onQueryChange = { viewModel.searchQuery = it },
+                        onSearch = { query -> viewModel.search(query, null as SearchDemon?) },
+                        expanded = viewModel.searchActive,
+                        onExpandedChange = { viewModel.searchActive = it },
+                        enabled = true,
+                        placeholder = { Text(text = stringResource(R.string.placeholder_search)) },
+                        leadingIcon = { Icon(Icons.Outlined.Search, null) },
+                        trailingIcon = {
+                            if (!viewModel.searchActive) {
+                                IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
+                                    Icon(imageVector = Icons.Outlined.Settings, contentDescription = stringResource(R.string.action_open_settings))
+                                }
+                            } else if (viewModel.searchQuery.isNotBlank()) {
+                                IconButton(onClick = { viewModel.clearSearch() }) {
+                                    Icon(imageVector = Icons.Outlined.Clear, contentDescription = stringResource(R.string.action_clear))
+                                }
+                            }
+                        },
+                        colors = SearchBarDefaults.inputFieldColors(),
+                        interactionSource = null,
+                    )
+                },
+                expanded = viewModel.searchActive,
+                onExpandedChange = { viewModel.searchActive = it },
+                modifier = Modifier,
+                shadowElevation = 3.dp,
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        DemonSearchList(viewModel = viewModel)
                     }
                 },
-                shadowElevation = 3.dp
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    DemonSearchList(viewModel = viewModel)
-                }
-            }
+            )
         }
     }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -47,6 +48,7 @@ class LoginFormScreen: Screen {
             modifier = Modifier.padding(32.dp)
         ) {
             val focusRequester = remember { FocusRequester() }
+            val focusManager = LocalFocusManager.current
             val canSubmit = viewModel.username.isNotBlank() && viewModel.password.isNotBlank()
 
             OutlinedTextField(
@@ -55,8 +57,8 @@ class LoginFormScreen: Screen {
                 onValueChange = viewModel::updateUsername,
                 keyboardActions = KeyboardActions(onNext = { focusRequester.requestFocus() }),
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    autoCorrect = false
+                    autoCorrectEnabled = false,
+                    imeAction = ImeAction.Next
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -65,10 +67,15 @@ class LoginFormScreen: Screen {
                 label = { Text(stringResource(R.string.label_password)) },
                 value = viewModel.password,
                 onValueChange = viewModel::updatePassword,
-                keyboardActions = KeyboardActions(onDone = { if (canSubmit && !viewModel.loading) viewModel.login() }),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        if (canSubmit && !viewModel.loading) viewModel.login()
+                    }
+                ),
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    autoCorrect = false
+                    autoCorrectEnabled = false,
+                    imeAction = ImeAction.Done
                 ),
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
