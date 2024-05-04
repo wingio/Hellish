@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,6 +51,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.delay
 import xyz.wingio.hellish.R
 import xyz.wingio.hellish.domain.manager.SearchDemon
+import xyz.wingio.hellish.ui.component.search.SearchInput
 import xyz.wingio.hellish.ui.icon.filled.Demon
 import xyz.wingio.hellish.ui.screen.demonlist.component.DemonListItem
 import xyz.wingio.hellish.ui.screen.demonlist.component.DemonSearchList
@@ -73,6 +76,8 @@ class DemonListTab: Tab {
         val demons = viewModel.demons.collectAsLazyPagingItems()
         val statusBarHeight = WindowInsets.systemBars.asPaddingValues(LocalDensity.current).calculateTopPadding()
         val pullToRefreshState = rememberPullToRefreshState()
+
+        println(demons.loadState)
 
         Scaffold(
             contentWindowInsets = WindowInsets(0, 0, 0, 0)
@@ -112,6 +117,21 @@ class DemonListTab: Tab {
                         }
                     }
 
+                    if (demons.loadState.refresh == LoadState.Loading && demons.itemCount < 1) {
+                        item("loading spinner") {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(30.dp)
+                                )
+                            }
+                        }
+                    }
+
                     items(
                         demons.itemCount,
                         key = demons.itemKey(),
@@ -124,6 +144,8 @@ class DemonListTab: Tab {
                             )
                         }
                     }
+
+
                 }
 
                 // Adds a fade to the area behind the status bar to give the status icons some contrast
@@ -156,7 +178,7 @@ class DemonListTab: Tab {
         val navigator = LocalNavigator.currentOrThrow
 
         LaunchedEffect(viewModel.searchQuery) {
-            if (viewModel.searchQuery.isNotBlank()) {
+            if (viewModel.searchQuery.text.isNotBlank()) {
                 delay(0.3.seconds)
                 viewModel.getSearchSuggestions()
             } else {
@@ -170,7 +192,7 @@ class DemonListTab: Tab {
         ) {
             SearchBar(
                 inputField = {
-                    SearchBarDefaults.InputField(
+                    SearchInput(
                         query = viewModel.searchQuery,
                         onQueryChange = { viewModel.searchQuery = it },
                         onSearch = { query -> viewModel.search(query, null as SearchDemon?) },
@@ -184,7 +206,7 @@ class DemonListTab: Tab {
                                 IconButton(onClick = { navigator.navigate(SettingsScreen()) }) {
                                     Icon(imageVector = Icons.Outlined.Settings, contentDescription = stringResource(R.string.action_open_settings))
                                 }
-                            } else if (viewModel.searchQuery.isNotBlank()) {
+                            } else if (viewModel.searchQuery.text.isNotBlank()) {
                                 IconButton(onClick = { viewModel.clearSearch() }) {
                                     Icon(imageVector = Icons.Outlined.Clear, contentDescription = stringResource(R.string.action_clear))
                                 }

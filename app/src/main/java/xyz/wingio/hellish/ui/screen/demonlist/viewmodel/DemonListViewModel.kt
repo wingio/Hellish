@@ -3,6 +3,7 @@ package xyz.wingio.hellish.ui.screen.demonlist.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
@@ -33,21 +34,21 @@ class DemonListViewModel(
     var suggestedDemon by mutableStateOf(null as ModelDemon?)
         private set
 
-    var searchQuery by mutableStateOf("")
+    var searchQuery by mutableStateOf(TextFieldValue(""))
     var searchActive by mutableStateOf(false)
     var searchedQuery by mutableStateOf("")
         private set
 
     fun getSearchSuggestions() {
         screenModelScope.launch {
-            pointercrateRepository.getDemons(limit = 1, query = searchQuery).ifSuccessful {
+            pointercrateRepository.getDemons(limit = 1, query = searchQuery.text).ifSuccessful {
                 suggestedDemon = it.firstOrNull()
             }
         }
     }
 
     fun clearSearch() {
-        searchQuery = ""
+        searchQuery = TextFieldValue("")
         suggestedDemon = null
         searchedQuery = ""
         demons = rankedPager
@@ -61,7 +62,7 @@ class DemonListViewModel(
     )
 
     fun search(query: String, demon: SearchDemon? = null) {
-        searchQuery = query
+        searchQuery = searchQuery.copy(query)
         recentSearchManager.saveDemonSearch(query, demon)
         searchActive = false
         searchedQuery = query
