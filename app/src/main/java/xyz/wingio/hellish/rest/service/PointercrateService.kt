@@ -50,4 +50,8 @@ class PointercrateService(
         query?.let { parameter("name_contains", query) }
     }
 
+    suspend fun getDemon(
+        id: Int
+    ) = apiService.get<Demon>(Routes.V2.Demons(id))
+
 }
