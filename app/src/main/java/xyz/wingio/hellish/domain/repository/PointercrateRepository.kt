@@ -45,7 +45,7 @@ class PointercrateRepository(
     suspend fun getDemon(
         id: Int
     ) = service.getDemon(id).transform {
-        ModelDemon.fromApiDemon(it)
+        ModelDemon.fromApiDemon(it.data)
     }
 
 
