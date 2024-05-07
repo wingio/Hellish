@@ -63,4 +63,13 @@
     <string name="about_translate">Translate</string>
 
     <string name="search_heading">Showing results for \"%1$s\":</string>
+    
+    <string name="provider_youtube">YouTube</string>
+    <string name="provider_twitch">Twitch</string>
+    <string name="provider_everyplay">Everyplay</string>
+    <string name="provider_vimeo">Vimeo</string>
+    <string name="provider_bilibili">Bilibili</string>
+    <string name="provider_misc">Miscellaneous</string>
+
+    <string name="demon_authorship">By %1$s, verified by %2$s</string>
 </resources>

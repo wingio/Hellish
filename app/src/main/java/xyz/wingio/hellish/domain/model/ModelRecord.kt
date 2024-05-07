@@ -8,7 +8,8 @@ data class ModelRecord(
     val status: Status,
     val player: ModelPlayer? = null,
     val demon: ModelDemon? = null,
-    val submitter: ModelSubmitter? = null
+    val submitter: ModelSubmitter? = null,
+    val nationality: ModelNationality? = null
 ) {
 
     enum class Status {
@@ -39,7 +40,8 @@ data class ModelRecord(
                 status = Status.fromApiRecordStatus(status),
                 player = player?.let { ModelPlayer.fromApiPlayer(it) },
                 demon = demon?.let { ModelDemon.fromApiDemon(it) },
-                submitter = submitter?.let { ModelSubmitter.fromApiSubmitter(it) }
+                submitter = submitter?.let { ModelSubmitter.fromApiSubmitter(it) },
+                nationality = nationality?.let { ModelNationality.fromApiNationality(it) }
             )
         }
 

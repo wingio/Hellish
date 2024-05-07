@@ -10,7 +10,8 @@ data class Record(
     val status: Status,
     val player: Player? = null,
     val demon: Demon? = null,
-    val submitter: Submitter? = null
+    val submitter: Submitter? = null,
+    val nationality: Nationality? = null
 ) {
 
     @Serializable
