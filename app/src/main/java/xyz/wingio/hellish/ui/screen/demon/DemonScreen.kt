@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -166,13 +168,13 @@ class DemonScreen(
                                  }
                              }
 
-                             Column(
+                             LazyColumn(
                                  verticalArrangement = Arrangement.spacedBy(16.dp),
                                  modifier = Modifier
                                      .padding(16.dp)
                                      .fillMaxWidth()
                              ) {
-                                 demon.records?.forEach { record ->
+                                 items(demon.records ?: emptyList()) { record ->
                                      RecordItem(
                                          record = record,
                                          modifier = Modifier.fillMaxWidth()
