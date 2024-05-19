@@ -5,19 +5,19 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,7 +49,7 @@ import xyz.wingio.hellish.domain.model.VideoProvider
 import xyz.wingio.hellish.ui.screen.demon.component.DemonTopAppBar
 import xyz.wingio.hellish.ui.screen.demon.component.RecordItem
 import xyz.wingio.hellish.ui.screen.demon.viewmodel.DemonViewModel
-import xyz.wingio.hellish.util.round
+import java.text.DecimalFormat
 
 class DemonScreen(
     private val id: Int
@@ -81,105 +81,94 @@ class DemonScreen(
                         .padding(pv)
                         .fillMaxSize()
                 ) {
-                    Column(
-                        modifier = Modifier.verticalScroll(rememberScrollState())
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp, 16.dp, 16.dp, 16.dp + WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                          viewModel.demon?.let { demon ->
-                             Row(
-                                 verticalAlignment = Alignment.CenterVertically,
-                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                 modifier = Modifier
-                                     .fillMaxWidth()
-                                     .padding(horizontal = 16.dp, vertical = 25.dp)
-                             ) {
-                                 Box(
-                                     contentAlignment = Alignment.Center,
-                                     modifier = Modifier
-                                         .size(70.dp)
-                                         .background(
-                                             MaterialTheme.colorScheme.primary,
-                                             CircleShape
-                                         )
-                                 ) {
-                                     Text(
-                                         text = "#${demon.position}",
-                                         style = MaterialTheme.typography.titleLarge,
-                                         color = MaterialTheme.colorScheme.onPrimary,
-                                         textAlign = TextAlign.Center,
-                                         fontSize = when (demon.position) {
-                                             in 1..9 -> 23.sp
-                                             in 10..99 -> 21.sp
-                                             else -> 19.sp
-                                         },
-                                         fontWeight = FontWeight.Bold,
-                                         letterSpacing = 1.1.sp
-                                     )
-                                 }
-
+                             item("rank and score") {
                                  Row(
                                      verticalAlignment = Alignment.CenterVertically,
-                                     horizontalArrangement = Arrangement.SpaceEvenly,
+                                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                                      modifier = Modifier
                                          .fillMaxWidth()
-                                         .shadow(3.dp, RoundedCornerShape(16.dp))
-                                         .background(
-                                             MaterialTheme.colorScheme.secondaryContainer,
-                                             CircleShape
-                                         )
+                                         .padding(vertical = 9.dp)
                                  ) {
-                                     Column(
-                                         horizontalAlignment = Alignment.CenterHorizontally,
-                                         modifier = Modifier.padding(5.dp)
+                                     Box(
+                                         contentAlignment = Alignment.Center,
+                                         modifier = Modifier
+                                             .size(70.dp)
+                                             .shadow(1.dp, CircleShape)
+                                             .background(
+                                                 MaterialTheme.colorScheme.primary,
+                                                 CircleShape
+                                             )
                                      ) {
                                          Text(
-                                             text = "Score (${demon.requirement}%)",
-                                             style = MaterialTheme.typography.titleSmall,
-                                             color = MaterialTheme.colorScheme.onSecondaryContainer
-                                         )
-
-                                         Text(
-                                             text = demon.score(demon.requirement!!).round(2).toString(),
-                                             style = MaterialTheme.typography.titleMedium,
-                                             color = MaterialTheme.colorScheme.onSecondaryContainer
+                                             text = "#${demon.position}",
+                                             style = MaterialTheme.typography.titleLarge,
+                                             color = MaterialTheme.colorScheme.onPrimary,
+                                             textAlign = TextAlign.Center,
+                                             fontSize = when (demon.position) {
+                                                 in 1..9 -> 23.sp
+                                                 in 10..99 -> 21.sp
+                                                 else -> 19.sp
+                                             },
+                                             fontWeight = FontWeight.Bold,
+                                             letterSpacing = 1.1.sp
                                          )
                                      }
 
-                                     VerticalDivider(
-                                         color = MaterialTheme.colorScheme.outline,
-                                         modifier = Modifier.height(40.dp)
-                                     )
-
-                                     Column(
-                                         horizontalAlignment = Alignment.CenterHorizontally,
-                                         modifier = Modifier.padding(10.dp)
+                                     Row(
+                                         verticalAlignment = Alignment.CenterVertically,
+                                         horizontalArrangement = Arrangement.SpaceEvenly,
+                                         modifier = Modifier
+                                             .fillMaxWidth()
+                                             .shadow(1.dp, CircleShape)
+                                             .background(
+                                                 MaterialTheme.colorScheme.secondaryContainer,
+                                                 CircleShape
+                                             )
                                      ) {
-                                         Text(
-                                             text = "Score (100%)",
-                                             style = MaterialTheme.typography.titleSmall,
-                                             color = MaterialTheme.colorScheme.onSecondaryContainer
+                                         @Composable
+                                         fun ScoreAtProgress(
+                                             progress: Int
+                                         ) {
+                                             Column(
+                                                 horizontalAlignment = Alignment.CenterHorizontally,
+                                                 modifier = Modifier.padding(10.dp)
+                                             ) {
+                                                 Text(
+                                                     text = stringResource(R.string.demon_score_label, "$progress%"),
+                                                     style = MaterialTheme.typography.titleSmall,
+                                                     color = MaterialTheme.colorScheme.onSecondaryContainer
+                                                 )
+
+                                                 Text(
+                                                     text = DecimalFormat("#.##").format(demon.score(progress)),
+                                                     style = MaterialTheme.typography.titleMedium,
+                                                     color = MaterialTheme.colorScheme.onSecondaryContainer
+                                                 )
+                                             }
+                                         }
+
+                                         ScoreAtProgress(demon.requirement!!)
+
+                                         VerticalDivider(
+                                             color = MaterialTheme.colorScheme.outline,
+                                             modifier = Modifier.height(40.dp)
                                          )
 
-                                         Text(
-                                             text = demon.score(100).round(2).toString(),
-                                             style = MaterialTheme.typography.titleMedium,
-                                             color = MaterialTheme.colorScheme.onSecondaryContainer
-                                         )
+                                         ScoreAtProgress(100)
                                      }
                                  }
                              }
 
-                             LazyColumn(
-                                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                                 modifier = Modifier
-                                     .padding(16.dp)
-                                     .fillMaxWidth()
-                             ) {
-                                 items(demon.records ?: emptyList()) { record ->
-                                     RecordItem(
-                                         record = record,
-                                         modifier = Modifier.fillMaxWidth()
-                                     )
-                                 }
+                             items(demon.records ?: emptyList()) { record ->
+                                 RecordItem(
+                                     record = record,
+                                     modifier = Modifier.fillMaxWidth()
+                                 )
                              }
                          }
                     }
@@ -203,7 +192,7 @@ class DemonScreen(
                 } else {
                     Column {
                         Text(
-                            text = viewModel.demon?.name ?: "Error loading demon",
+                            text = viewModel.demon?.name ?: stringResource(R.string.demon_load_error),
                         )
 
                         if (viewModel.demon != null) {
@@ -224,7 +213,7 @@ class DemonScreen(
                     IconButton(onClick = { uriHandler.openUri(videoUrl) }) {
                         Icon(
                             painter = painterResource(VideoProvider.fromUrl(videoUrl).iconRes),
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.action_watch_verification)
                         )
                     }
                 }

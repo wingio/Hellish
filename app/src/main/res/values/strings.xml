@@ -17,6 +17,8 @@
     <string name="action_open_github">Visit the developer\'s GitHub profile</string>
     <string name="action_refine">Refine: %1$s</string>
     <string name="action_clear">Clear</string>
+    <string name="action_watch_record">Watch this record</string>
+    <string name="action_watch_verification">Watch this level\'s verification</string>
 
     <string name="action_dismiss_cancel">Cancel</string>
 
@@ -72,4 +74,8 @@
     <string name="provider_misc">Miscellaneous</string>
 
     <string name="demon_authorship">By %1$s, verified by %2$s</string>
+    <string name="demon_score_label">Score (%1$s)</string>
+    <string name="demon_load_error">Error loading demon</string>
+
+    <string name="name_unknown">Unknown</string>
 </resources>

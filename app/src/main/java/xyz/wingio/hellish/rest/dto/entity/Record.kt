@@ -11,7 +11,8 @@ data class Record(
     val player: Player? = null,
     val demon: Demon? = null,
     val submitter: Submitter? = null,
-    val nationality: Nationality? = null
+    val nationality: Nationality? = null,
+    val video: String? = null
 ) {
 
     @Serializable
