@@ -13,5 +13,6 @@ data class Demon(
     val thumbnail: String? = null,
     val levelId: Int? = null,
     val requirement: Int? = null,
-    val creators: List<Player>? = null
+    val creators: List<Player>? = null,
+    val records: List<Record>? = null
 )

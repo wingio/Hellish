@@ -42,5 +42,11 @@ class PointercrateRepository(
         it.map { apiDemon -> ModelDemon.fromApiDemon(apiDemon) }
     }
 
+    suspend fun getDemon(
+        id: Int
+    ) = service.getDemon(id).transform {
+        ModelDemon.fromApiDemon(it.data)
+    }
+
 
 }

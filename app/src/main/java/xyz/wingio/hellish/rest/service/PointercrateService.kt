@@ -5,6 +5,7 @@ import io.ktor.client.request.parameter
 import io.ktor.http.HttpHeaders
 import xyz.wingio.hellish.rest.Routes
 import xyz.wingio.hellish.rest.dto.entity.Demon
+import xyz.wingio.hellish.rest.dto.response.GenericResponse
 import xyz.wingio.hellish.rest.dto.response.Login
 import xyz.wingio.hellish.rest.response.PageInfo
 import xyz.wingio.hellish.rest.response.page
@@ -49,5 +50,9 @@ class PointercrateService(
         page(pageInfo, limit)
         query?.let { parameter("name_contains", query) }
     }
+
+    suspend fun getDemon(
+        id: Int
+    ) = apiService.get<GenericResponse<Demon>>(Routes.V2.Demons(id))
 
 }

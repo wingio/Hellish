@@ -25,11 +25,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import com.materialkolor.PaletteStyle
 import org.koin.compose.koinInject
 import xyz.wingio.hellish.domain.manager.PaletteManager
 import xyz.wingio.hellish.domain.model.ModelDemon
+import xyz.wingio.hellish.ui.screen.demon.DemonScreen
+import xyz.wingio.hellish.util.navigate
 import xyz.wingio.hellish.util.thenIf
 
 @Composable
@@ -37,10 +41,12 @@ fun DemonListItem(
     demon: ModelDemon,
     modifier: Modifier = Modifier
 ) {
+    val navigator = LocalNavigator.currentOrThrow
     val paletteManager: PaletteManager = koinInject()
     val thumbnailColors = paletteManager.getThemeForImage(demon.thumbnail!!, paletteStyle = PaletteStyle.Vibrant)
 
     ElevatedCard(
+        onClick = { navigator.navigate(DemonScreen(demon.id)) },
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = if (demon.position == 1) 0.dp else 6.dp
         ),

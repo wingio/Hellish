@@ -17,9 +17,13 @@ object Routes {
 
     object V2: Route("/v2") {
 
-        object Demons: Route("$V2/demons") {
+        class Demons(id: Int): Route("$V2/demons/$id") {
 
-            val Listed = Route("$Demons/listed")
+            companion object: Route("$V2/demons") {
+
+                val Listed = Route("$Demons/listed")
+
+            }
 
         }
 
