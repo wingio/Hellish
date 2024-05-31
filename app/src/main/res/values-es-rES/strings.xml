@@ -16,6 +16,8 @@
     <string name="action_open_github">Ver el perfil de GitHub del desarrollador</string>
     <string name="action_refine">Refinar: %1$s</string>
     <string name="action_clear">Borrar todo</string>
+    <string name="action_watch_record">Watch this record</string>
+    <string name="action_watch_verification">Watch this level\'s verification</string>
     <string name="action_dismiss_cancel">Cancelar</string>
     <string name="label_username">Nombre de Usuario</string>
     <string name="label_password">Contraseña</string>
@@ -50,4 +52,16 @@
     <string name="about_bug_report">Reportar un fallo</string>
     <string name="about_translate">Traducir</string>
     <string name="search_heading">Mostrando resultados para \"%1$s\":</string>
+    <string name="provider_youtube">YouTube</string>
+    <string name="provider_twitch">Twitch</string>
+    <string name="provider_everyplay">Everyplay</string>
+    <string name="provider_vimeo">Vimeo</string>
+    <string name="provider_bilibili">Bilibili</string>
+    <string name="provider_misc">Miscellaneous</string>
+    <string name="demon_authorship">By %1$s, verified by %2$s</string>
+    <string name="demon_score_label">Score (%1$s)</string>
+    <string name="demon_load_error">Error loading demon</string>
+    <string name="demon_records">Records</string>
+    <string name="demon_requirement">%1$s to qualify</string>
+    <string name="name_unknown">Unknown</string>
 </resources>
