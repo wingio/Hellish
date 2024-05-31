@@ -20,7 +20,6 @@ enum class VideoProvider(
 
         fun fromUrl(url: String): VideoProvider {
             val uri = url.toUri()
-            println(uri.host)
 
             return when (uri.host?.lowercase()) {
                 "www.youtube.com" -> YOUTUBE
