@@ -76,6 +76,8 @@
     <string name="demon_authorship">By %1$s, verified by %2$s</string>
     <string name="demon_score_label">Score (%1$s)</string>
     <string name="demon_load_error">Error loading demon</string>
+    <string name="demon_records">Records</string>
+    <string name="demon_requirement">%1$s to qualify</string>
 
     <string name="name_unknown">Unknown</string>
 </resources>

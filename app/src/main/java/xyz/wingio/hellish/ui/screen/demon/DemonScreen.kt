@@ -164,6 +164,27 @@ class DemonScreen(
                                  }
                              }
 
+                             item("records header") {
+                                 Row(
+                                     horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                     verticalAlignment = Alignment.CenterVertically,
+                                     modifier = Modifier.padding(top = 16.dp)
+                                 ) {
+                                     Text(
+                                         text = stringResource(R.string.demon_records),
+                                         style = MaterialTheme.typography.titleMedium,
+                                         color = MaterialTheme.colorScheme.primary,
+                                         modifier = Modifier.weight(1f)
+                                     )
+
+                                     Text(
+                                         text = stringResource(R.string.demon_requirement, "${demon.requirement!!}%"),
+                                         style = MaterialTheme.typography.titleSmall,
+                                         color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
+                                     )
+                                 }
+                             }
+
                              items(demon.records ?: emptyList()) { record ->
                                  RecordItem(
                                      record = record,
